@@ -1,0 +1,27 @@
+﻿@model CMS.Data.Entities.Post
+
+<div class="container mt-4" style="max-width: 600px;">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0 text-uppercase fw-bold text-center">Gỡ Bỏ Bài Viết</h4>
+        </div>
+        <div class="card-body p-4 text-center">
+            <div class="alert alert-warning">
+                Hành động này sẽ xóa vĩnh viễn bài viết khỏi hệ thống. Bạn có chắc chắn muốn tiếp tục không?
+            </div>
+
+            <div class="text-start bg-light p-3 rounded mb-4">
+                <p class="mb-1"><strong>Mã bài viết (ID):</strong> @Model.Id</p>
+                <p class="mb-1"><strong>Tiêu đề:</strong> @Model.Title</p>
+                <p class="mb-1"><strong>Chuyên mục:</strong> <span class="badge bg-secondary">@Model.Category?.Name</span></p>
+                <p class="mb-0"><strong>Ngày đăng:</strong> <span class="text-muted">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</span></p>
+            </div>
+
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger px-4 me-2">Đồng ý xóa hẳn</button>
+                <a asp-action="Index" class="btn btn-secondary px-4">Quay lại danh sách</a>
+            </form>
+        </div>
+    </div>
+</div>

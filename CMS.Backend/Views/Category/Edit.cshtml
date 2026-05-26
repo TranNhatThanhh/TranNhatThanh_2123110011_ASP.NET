@@ -1,0 +1,23 @@
+﻿@model CMS.Data.Entities.Category
+
+<div class="container mt-4">
+    <h2 class="text-warning text-uppercase fw-bold">Chỉnh Sửa Danh Mục</h2>
+    <hr />
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Tên danh mục:</label>
+            <input asp-for="Name" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Mô tả danh mục:</label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-warning text-dark fw-bold">Cập nhật thay đổi</button>
+        <a asp-action="Index" class="btn btn-secondary">Hủy bỏ</a>
+    </form>
+</div>

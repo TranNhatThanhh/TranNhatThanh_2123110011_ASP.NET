@@ -1,22 +1,42 @@
 ﻿@model IEnumerable<CMS.Data.Entities.Category>
 
-<h2 class="text-primary">DANH SÁCH DANH MỤC (DỮ LIỆU MẪU)</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Tên danh mục</th>
-            <th>Mô tả</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary m-0">DANH SÁCH DANH MỤC</h2>
+
+        <a href="/Category/Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Thêm danh mục mới
+        </a>
+    </div>
+
+    <table class="table table-bordered table-striped shadow-sm">
+        <thead class="table-dark">
             <tr>
-                <td>@item.Id</td>
-                <td>@item.Name</td>
-                <td>@item.Description</td>
+                <th style="width: 10%;">ID</th>
+                <th style="width: 30%;">Tên danh mục</th>
+                <th style="width: 40%;">Mô tả</th>
+                <th style="width: 20%;" class="text-center">Thao tác</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td class="fw-bold text-secondary">@item.Name</td>
+                    <td>@item.Description</td>
+                    <td class="text-center">
+                        <div class="d-flex gap-2 justify-content-center">
+                            <a href="/Category/Edit/@item.Id" class="btn btn-warning btn-sm fw-bold text-dark">
+                                Sửa
+                            </a>
+                            <a href="/Category/Delete/@item.Id" class="btn btn-danger btn-sm">
+                                Xóa
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

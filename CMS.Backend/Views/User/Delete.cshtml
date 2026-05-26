@@ -1,0 +1,27 @@
+﻿@model CMS.Data.Entities.User
+
+<div class="container mt-4" style="max-width: 600px;">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0 text-uppercase fw-bold text-center">Xác Nhận Xóa Tài Khoản</h4>
+        </div>
+        <div class="card-body p-4 text-center">
+            <div class="alert alert-warning">
+                Bạn có chắc chắn muốn gỡ bỏ thành viên này khỏi hệ thống không? Hành động này sẽ xóa dữ liệu vĩnh viễn trong cơ sở dữ liệu.
+            </div>
+
+            <div class="text-start bg-light p-3 rounded mb-4">
+                <p class="mb-1"><strong>Mã thành viên (ID):</strong> @Model.Id</p>
+                <p class="mb-1"><strong>Tài khoản:</strong> @Model.Username</p>
+                <p class="mb-1"><strong>Họ và Tên:</strong> @Model.FullName</p>
+                <p class="mb-0"><strong>Quyền hạn:</strong> <span class="badge bg-secondary">@Model.Role</span></p>
+            </div>
+
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger px-4 me-2">Đồng ý xóa hẳn</button>
+                <a asp-action="Index" class="btn btn-secondary px-4">Hủy quay lại</a>
+            </form>
+        </div>
+    </div>
+</div>
