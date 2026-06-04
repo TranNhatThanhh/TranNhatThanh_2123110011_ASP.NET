@@ -1,0 +1,18 @@
+﻿@model CMS.Data.Entities.Product
+
+<h2>Sửa sản phẩm</h2>
+
+<form asp-action="Edit">
+
+    <input asp-for="Id" hidden />
+
+    <div class="mb-3">
+        <label>Tên sản phẩm</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-warning">
+        Cập nhật
+    </button>
+
+</form>
