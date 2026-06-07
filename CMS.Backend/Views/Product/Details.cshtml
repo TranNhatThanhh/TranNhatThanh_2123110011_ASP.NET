@@ -1,0 +1,70 @@
+﻿@model CMS.Data.Entities.Product
+
+<div class="container mt-5">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a asp-controller="Product" asp-action="Index">Danh sách sản phẩm</a>
+            </li>
+            <li class="breadcrumb-item active">Chi tiết sản phẩm</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Ảnh sản phẩm -->
+        <div class="col-md-5">
+            <img src="@Model.ImageUrl"
+                 class="card-img-top"
+                 alt="Product Image"
+                 style=" width:100%">
+        </div>
+
+        <!-- Thông tin sản phẩm -->
+        <div class="col-md-7">
+            <h2 class="fw-bold text-primary">@Model.Name</h2>
+
+            <p>
+                <strong>Danh mục:</strong>
+                @(Model.CategoryProduct?.Name ?? "Chưa có danh mục")
+            </p>
+
+            <p>
+                <strong>Giá:</strong>
+                <span class="text-danger fs-4">
+                    @Model.Price.ToString("N0") VNĐ
+                </span>
+            </p>
+
+            <p>
+                <strong>Số lượng còn:</strong>
+                @Model.StockQuantity
+            </p>
+
+            <hr />
+
+            <h5>Mô tả sản phẩm</h5>
+            <p>
+                @(string.IsNullOrEmpty(Model.Description)
+                                ? "Chưa có mô tả"
+                                : Model.Description)
+            </p>
+
+            <div class="mt-4">
+                <a asp-controller="Product"
+                   asp-action="Index"
+                   class="btn btn-secondary">
+                    Quay lại
+                </a>
+
+                <a asp-controller="Product"
+                   asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-warning">
+                    Chỉnh sửa
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>

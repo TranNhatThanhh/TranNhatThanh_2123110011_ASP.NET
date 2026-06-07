@@ -2,7 +2,9 @@
 
 <h2>Thêm sản phẩm</h2>
 
-<form asp-action="Create" method="post">
+<form asp-action="Create"
+      method="post"
+      enctype="multipart/form-data">
 
     <div class="mb-3">
         <label asp-for="Name" class="form-label">Tên sản phẩm</label>
@@ -28,10 +30,10 @@
 
     <div class="mb-3">
         <label class="form-label">Ảnh sản phẩm</label>
-
         <input type="file"
                name="ImageFile"
-               class="form-control" />
+               class="form-control"
+               accept="image/*" />
     </div>
 
     <div class="mb-3">
@@ -39,10 +41,8 @@
 
         <select asp-for="CategoryProductId"
                 asp-items="ViewBag.CategoryList"
-                class="form-control">
-
+                class="form-select">
             <option value="">-- Chọn danh mục --</option>
-
         </select>
     </div>
 
@@ -55,3 +55,9 @@
     </a>
 
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

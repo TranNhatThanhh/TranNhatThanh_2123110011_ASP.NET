@@ -3,6 +3,7 @@ using CMS.Data.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 
 public class ProductController : Controller
@@ -42,7 +43,7 @@ public class ProductController : Controller
 
             string uploadFolder = Path.Combine(
                 Directory.GetCurrentDirectory(),
-                "wwwroot/img"
+                "wwwroot/uploads"
             );
 
             if (!Directory.Exists(uploadFolder))
@@ -57,7 +58,7 @@ public class ProductController : Controller
                 ImageFile.CopyTo(stream);
             }
 
-            product.ImageUrl = "/img/" + fileName;
+            product.ImageUrl = "/uploads/" + fileName;
         }
 
         _context.Products.Add(product);
@@ -74,21 +75,72 @@ public class ProductController : Controller
         if (item == null)
             return NotFound();
 
+        ViewBag.CategoryList = new SelectList(
+            _context.CategoriesProducts,
+            "Id",
+            "Name",
+            item.CategoryProductId
+        );
+
         return View(item);
     }
 
     [HttpPost]
-    public IActionResult Edit(Product product)
+    public IActionResult Edit(Product product, IFormFile? ImageFile)
     {
-        if (ModelState.IsValid)
+        var oldProduct = _context.Products
+            .FirstOrDefault(x => x.Id == product.Id);
+
+        if (oldProduct == null)
+            return NotFound();
+
+        if (ImageFile != null)
         {
-            _context.Products.Update(product);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            string fileName = Guid.NewGuid().ToString()
+                            + Path.GetExtension(ImageFile.FileName);
+
+            string uploadFolder = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot/uploads"
+            );
+
+            if (!Directory.Exists(uploadFolder))
+            {
+                Directory.CreateDirectory(uploadFolder);
+            }
+
+            string filePath = Path.Combine(uploadFolder, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                ImageFile.CopyTo(stream);
+            }
+
+            product.ImageUrl = "/uploads/" + fileName;
         }
+        else
+        {
+            product.ImageUrl = oldProduct.ImageUrl;
+        }
+
+        _context.Entry(oldProduct).CurrentValues.SetValues(product);
+        _context.SaveChanges();
+
+        return RedirectToAction(nameof(Index));
+    }
+    public IActionResult Details(int id)
+    {
+        var product = _context.Products
+            .Include(p => p.CategoryProduct)
+            .FirstOrDefault(p => p.Id == id);
+
+        if (product == null)
+        {
+            return NotFound();
+        }
+
         return View(product);
     }
-
     [HttpGet]
     public IActionResult Delete(int id)
     {
