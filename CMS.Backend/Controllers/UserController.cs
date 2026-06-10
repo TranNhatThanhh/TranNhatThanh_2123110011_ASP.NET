@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CMS.Data; // 1. THÊM DÒNG NÀY: Để nhận diện lớp ApplicationDbContext
+﻿using CMS.Data; // 1. THÊM DÒNG NÀY: Để nhận diện lớp ApplicationDbContext
 using CMS.Data.Entities; // Cần thiết để nhận diện thực thể User
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq; // 2. THÊM DÒNG NÀY: Để sử dụng hàm .ToList() của LINQ
 
 namespace CMS.Backend.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         // 3. Khai báo biến ngữ cảnh cơ sở dữ liệu (readonly)
