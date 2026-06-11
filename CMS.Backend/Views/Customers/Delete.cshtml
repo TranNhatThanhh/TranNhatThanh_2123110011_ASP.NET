@@ -1,0 +1,25 @@
+﻿@model CMS.Data.Entities.Customer
+
+<h2>Xóa khách hàng</h2>
+
+<div class="alert alert-danger">
+    Bạn có chắc chắn muốn xóa khách hàng này?
+</div>
+
+<p>
+    <strong>@Model.FullName</strong>
+</p>
+
+<form asp-action="Delete">
+
+    <input asp-for="Id" type="hidden" />
+
+    <button type="submit" class="btn btn-danger">
+        Xóa
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Hủy
+    </a>
+
+</form>

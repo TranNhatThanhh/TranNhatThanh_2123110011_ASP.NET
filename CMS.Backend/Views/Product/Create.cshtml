@@ -1,0 +1,63 @@
+﻿@model CMS.Data.Entities.Product
+
+<h2>Thêm sản phẩm</h2>
+
+<form asp-action="Create"
+      method="post"
+      enctype="multipart/form-data">
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Mô tả</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label">Giá</label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="StockQuantity" class="form-label">Số lượng</label>
+        <input asp-for="StockQuantity" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Ảnh sản phẩm</label>
+        <input type="file"
+               name="ImageFile"
+               class="form-control"
+               accept="image/*" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Danh mục sản phẩm</label>
+
+        <select asp-for="CategoryProductId"
+                asp-items="ViewBag.CategoryList"
+                class="form-select">
+            <option value="">-- Chọn danh mục --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Thêm sản phẩm
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Quay lại
+    </a>
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
