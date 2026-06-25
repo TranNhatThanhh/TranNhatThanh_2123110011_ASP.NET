@@ -1,48 +1,77 @@
 ﻿import React from 'react';
-import CategoryProductList from './components/CategoryProductList';
-import ProductList from './components/ProductList';
-import PostList from './components/PostList';
-import './App.css'; // File chứa các style tùy biến riêng của dự án
+// Import các thành phần lõi của thư viện điều hướng đường dẫn
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './pages/login';
+// 1. IMPORT CÁC COMPONENT TOÀN CỤC (LAYOUT CHUNG)
+import Header from './components/Header';
+import Footer from './components/Footer';
+
+// 2. IMPORT CÁC TRANG CHỨC NĂNG (GIAO DIỆN CHÍNH)
+import Home from './pages/home';           // Tự động nạp file pages/home/index.jsx
+import Shop from './pages/shop';           // Tự động nạp file pages/shop/index.jsx
+import ProductDetail from './pages/product-detail'; // Tự động nạp file pages/product-detail/index.jsx
+import Blog from './pages/blog';           // Tự động nạp file pages/blog/index.jsx
+import BlogDetail from './pages/blog-detail'; // SỬA TẠI ĐÂY: Tự động nạp qua file index.jsx mới sửa ở Bước 1
+import Cart from './pages/cart';           // Tự động nạp file pages/cart/index.jsx
+import Checkout from './pages/checkout';   // Tự động nạp file pages/checkout/index.jsx
 
 function App() {
     return (
-        <div className="container mt-5">
-            {/* Phần Header của Website */}
-            <header className="pb-3 mb-4 border-bottom">
-                <span className="fs-4 font-weight-bold text-dark text-uppercase">
-                    🛒 HỆ THỐNG CỬA HÀNG TRỰC TUYẾN - THAICMS RETAIL
-                </span>
-            </header>
+        // Khởi tạo bộ định tuyến bao bọc toàn bộ ứng dụng Web
+        <Router>
+            <div className="d-flex flex-column min-vh-100 bg-light">
 
-            <div className="row">
-                {/* Cột bên trái (Chức năng Sidebar): Hiển thị bộ lọc danh mục sản phẩm */}
-                <div className="col-md-3">
-                    <CategoryProductList />
-                </div>
+                {/* HIỂN THỊ THANH MENU ĐẦU TRANG */}
+                <Header />
 
-                {/* Cột bên phải (Chức năng Content): Dùng để hiển thị danh sách sản phẩm ở các bài học tiếp theo */}
-                <div className="col-md-8">
-                    <h4 className="mb-4 text-uppercase text-secondary font-weight-bold">Bộ sưu tập mới nhất</h4>
-                    <ProductList />
-                </div>
-                {/* KHU VỰC 2: BLOG & BLOG CATEGORIES (Tin tức thời trang công sở, dạ hội) */}
-                <div className="row mt-5">
-                    <div className="col-12">
-                        <PostList />
-                    </div>
-                </div>
-                <div className="col-md-9">
-                    <div className="jumbotron bg-light border p-5 rounded shadow-sm">
-                        <h2 className="display-5 font-weight-normal">Chào mừng đến với không gian trải nghiệm!</h2>
-                        <p className="lead mt-3 text-secondary">
-                            Khối dữ liệu bên thanh điều hướng trái đang được tải **Real-time** trực tiếp từ bảng <strong>CategoryProduct</strong> trong Database SQL Server thông qua nền tảng ASP.NET Core Web API (.NET 8.0).
-                        </p>
-                        <hr className="my-4" />
-                        <p className="text-muted">Hãy đảm bảo rằng bạn đã kích hoạt CORS ở Backend để dữ liệu không bị chặn hiển thị.</p>
-                    </div>
-                </div>
+                {/* KHU VỰC NỘI DUNG ĐỘNG (Thay đổi ruột tùy theo URL trên thanh địa chỉ) */}
+                <main className="flex-grow-1">
+                    <Routes>
+                        {/* Cấu hình Trang chủ - Khớp hoàn toàn với địa chỉ "/" */}
+                        <Route path="/" element={<Home />} />
+
+                        {/* Cấu hình Trang Cửa hàng - Địa chỉ "/shop" */}
+                        <Route path="/shop" element={<Shop />} />
+
+                        {/* Cấu hình Trang Chi tiết sản phẩm - Sử dụng tham số động ":id" */}
+                        <Route path="/product/:id" element={<ProductDetail />} />
+
+                        {/* Cấu hình Trang Danh sách tin tức - Địa chỉ "/blog" */}
+                        <Route path="/blog" element={<Blog />} />
+
+                        {/* Cấu hình Trang Chi tiết bài viết - Địa chỉ "/blog/:id" */}
+                        <Route path="/blog/:id" element={<BlogDetail />} />
+
+                        {/* Cấu hình Trang Giỏ hàng cá nhân - Địa chỉ "/cart" */}
+                        <Route path="/cart" element={<Cart />} />
+
+                        <Route path="/login" element={<Login />} />
+
+                        {/* Cấu hình Trang Điền thông tin thanh toán - Địa chỉ "/checkout" */}
+                        <Route path="/checkout" element={<Checkout />} />
+
+                        {/* XỬ LÝ KỊCH BẢN TRANG LỖI 404 */}
+                        <Route path="*" element={
+                            <div className="container text-center py-5 my-5">
+                                <img
+                                    src="https://cdn-icons-png.flaticon.com/512/580/580185.png"
+                                    alt="404"
+                                    className="mb-4"
+                                    style={{ width: '100px', opacity: 0.6 }}
+                                />
+                                <h2 className="fw-bold text-secondary">404 - KHÔNG TÌM THẤY TRANG</h2>
+                                <p className="text-muted">Đường dẫn bạn truy cập không tồn tại trên hệ thống.</p>
+                                <a href="/" className="btn btn-dark btn-sm mt-2">Quay lại Trang Chủ</a>
+                            </div>
+                        } />
+                    </Routes>
+                </main>
+
+                {/* HIỂN THỊ CHÂN TRANG */}
+                <Footer />
+
             </div>
-        </div>
+        </Router>
     );
 }
 

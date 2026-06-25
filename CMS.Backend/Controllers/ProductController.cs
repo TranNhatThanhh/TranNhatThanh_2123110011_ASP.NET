@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 
 
 public class ProductController : Controller
@@ -164,5 +166,34 @@ public class ProductController : Controller
         }
 
         return RedirectToAction(nameof(Index));
+    }
+    [HttpGet]
+    public async Task<IActionResult> GetAllProducts([FromQuery] int page = 1, [FromQuery] int pageSize = 8)
+    {
+        if (page < 1) page = 1;
+
+        // 1. Tính tổng số sản phẩm đang có trong Database
+        var totalItems = await _context.Products.CountAsync();
+
+        // 2. Tính tổng số trang dựa trên pageSize (ví dụ: 17 sản phẩm / 8 = 3 trang)
+        var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+        // 3. Lấy dữ liệu phân trang bằng lệnh Skip() và Take()
+        var data = await _context.Products
+            .Include(p => p.CategoryProduct)
+            .OrderByDescending(p => p.Id) // Hiện sản phẩm mới nhất lên đầu
+            .Skip((page - 1) * pageSize)  // Bỏ qua các sản phẩm của trang trước
+            .Take(pageSize)               // Lấy đúng số lượng của trang hiện tại
+            .ToListAsync();
+
+        // 4. Trả về đối tượng JSON bọc đầy đủ thông tin bổ trợ cho React
+        return Ok(new
+        {
+            TotalItems = totalItems,
+            TotalPages = totalPages,
+            CurrentPage = page,
+            PageSize = pageSize,
+            Data = data
+        });
     }
 }

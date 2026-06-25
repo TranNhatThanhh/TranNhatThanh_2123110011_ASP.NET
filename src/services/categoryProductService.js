@@ -1,5 +1,6 @@
 ﻿import axiosClient from '../api/axiosClient';
 
+
 const categoryProductService = {
     /**
      * Hàm lấy toàn bộ danh mục SẢN PHẨM từ Backend
@@ -11,5 +12,6 @@ const categoryProductService = {
         return axiosClient.get(url);
     }
 };
+
 
 export default categoryProductService;
