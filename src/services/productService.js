@@ -1,42 +1,28 @@
-﻿// Import cấu hình axiosClient dùng chung từ thư mục api
-import axiosClient from '../api/axiosClient';
-
+// Chức năng: Service gọi API sản phẩm từ Backend
+import axiosClient from './api';
 
 const productService = {
-    /**
-     * 1. Lấy danh sách toàn bộ sản phẩm thời trang (hoặc theo bộ lọc)
-     * API Endpoint: GET https://localhost:xxxx/api/Products
-     */
-    getAllProducts: async () => {
-        try {
-            // Thực hiện gọi API GET để lấy danh sách sản phẩm
-            const response = await axiosClient.get('/Products');
-
-
-            // Trả về mảng dữ liệu sản phẩm
-            return response.data || response;
-        } catch (error) {
-            console.error("Lỗi API getAllProducts:", error);
-            throw error; // Đẩy lỗi ra ngoài để component ProductGrid bắt được và xử lý giao diện
-        }
+    getAllProducts: () => {
+        return axiosClient.get('/products');
     },
-
-
-    /**
-     * 2. Lấy thông tin chi tiết của một sản phẩm theo ID
-     * API Endpoint: GET https://localhost:xxxx/api/Products/{id}
-     */
-    getProductById: async (id) => {
-        try {
-            const response = await axiosClient.get(`/Products/${id}`);
-            return response.data || response;
-        } catch (error) {
-            console.error(`Lỗi API getProductById với ID ${id}:`, error);
-            throw error;
-        }
+    getProductsByCategory: (categoryId) => {
+        return axiosClient.get(`/products/categoryproduct/${categoryId}`);
+    },
+    getProductById: (id) => {
+        return axiosClient.get(`/products/${id}`);
+    },
+    // Tìm kiếm sản phẩm theo từ khóa (Tiêu chí 40)
+    searchProducts: (keyword) => {
+        return axiosClient.get(`/products/search?q=${encodeURIComponent(keyword)}`);
+    },
+    // Lấy sản phẩm mới nhất (Tiêu chí 36)
+    getNewestProducts: (limit = 3) => {
+        return axiosClient.get(`/products/newest?limit=${limit}`);
+    },
+    // Lấy sản phẩm bán chạy nhất (Tiêu chí 37)
+    getBestsellerProducts: (limit = 3) => {
+        return axiosClient.get(`/products/bestseller?limit=${limit}`);
     }
 };
 
-
-// CRITICAL: Xuất mặc định đối tượng này để file ProductGrid.jsx import vào không bị lỗi 'default was not found'
 export default productService;

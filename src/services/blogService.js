@@ -1,15 +1,24 @@
-ï»¿import axiosClient from '../api/axiosClient';
+// Ch?c nãng: Tr?c g?i API Bài vi?t và b? sung Chuyên m?c tin t?c (M? r?ng Bu?i 8)
+import axiosClient from './api';
 
 const blogService = {
-    // HÃ m gá»i API láº¥y danh má»¥c cÃ¡c chá»§ Ä‘á» bÃ i viáº¿t
-    getBlogCategories: () => {
-        const url = '/Categories'; // Khá»›p vá»›i Route quáº£n lÃ½ chuyÃªn má»¥c tin tá»©c á»Ÿ Backend
+    // 1. Hàm l?y danh sách toàn b? bài vi?t (Ğ? làm ? ph?n th?c hành chung)
+    getAllPosts: () => {
+        const url = '/Posts';
         return axiosClient.get(url);
     },
-
-    // HÃ m gá»i API láº¥y toÃ n bá»™ cÃ¡c bÃ i viáº¿t (Máº¹o phá»‘i Ä‘á»“, tin tá»©c thá»i trang)
-    getAllPosts: () => {
-        const url = '/Posts'; // Khá»›p vá»›i Route quáº£n lÃ½ bÃ i viáº¿t á»Ÿ Backend
+    // 2. BÀI T?P T? LÀM: Thêm hàm l?y danh sách Chuyên m?c tin t?c (Category)
+    getBlogCategories: () => {
+        const url = '/Categories'; // C?n kh?p chính xác v?i [Route("api/Categories")] trong CategoriesController ? Backend
+        return axiosClient.get(url);
+    },
+    getPostsByCategory: (categoryId) => {
+        // Lıu ?: S?a l?i URL này n?u Backend c?a b?n ğ?nh ngh?a Route khác (VD: /Posts/categorypost/...)
+        const url = `/Posts/category/${categoryId}`;
+        return axiosClient.get(url);
+    },
+    getPostById: (id) => {
+        const url = `/Posts/${id}`;
         return axiosClient.get(url);
     }
 };
